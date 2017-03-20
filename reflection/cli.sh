@@ -1,0 +1,1 @@
+grpc_cli ls localhost:8972
