@@ -2,10 +2,9 @@ package main
 
 import (
 	"errors"
+	"flag"
 	"log"
 	"net"
-
-	"flag"
 
 	pb "github.com/smallnest/grpc-examples/auth/pb"
 	"golang.org/x/net/context"
@@ -14,14 +13,12 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-var (
-	port = flag.String("p", ":8972", "port")
-)
+var port = flag.String("p", ":8972", "port")
 
 type server struct{}
 
 func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
-	if md, ok := metadata.FromContext(ctx); ok {
+	if md, ok := metadata.FromIncomingContext(ctx); ok {
 		key := md[":authority"]
 		log.Printf("unary receive key: %+v", key)
 		if key[0] != "a-secret-key" {

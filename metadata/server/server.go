@@ -1,11 +1,10 @@
 package main
 
 import (
+	"flag"
 	"io"
 	"log"
 	"net"
-
-	"flag"
 
 	pb "github.com/smallnest/grpc-examples/metadata/pb"
 	"golang.org/x/net/context"
@@ -14,14 +13,12 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-var (
-	port = flag.String("p", ":8972", "port")
-)
+var port = flag.String("p", ":8972", "port")
 
 type server struct{}
 
 func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
-	if md, ok := metadata.FromContext(ctx); ok {
+	if md, ok := metadata.FromIncomingContext(ctx); ok {
 		log.Printf("unary receive MD: %+v", md)
 	}
 
@@ -34,7 +31,7 @@ func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloRe
 }
 
 func (s *server) SayHello1(gs pb.Greeter_SayHello1Server) error {
-	if md, ok := metadata.FromContext(gs.Context()); ok {
+	if md, ok := metadata.FromIncomingContext(gs.Context()); ok {
 		log.Printf("streaming receive MD: %+v", md)
 	}
 
