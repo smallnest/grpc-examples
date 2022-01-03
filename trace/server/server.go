@@ -1,23 +1,19 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"net"
 	"net/http"
-
-	"flag"
 
 	pb "github.com/smallnest/grpc-examples/trace/pb"
 	"golang.org/x/net/context"
 	"golang.org/x/net/trace"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/grpclog"
 	"google.golang.org/grpc/reflection"
 )
 
-var (
-	port = flag.String("p", ":8972", "port")
-)
+var port = flag.String("p", ":8972", "port")
 
 type server struct{}
 
@@ -41,7 +37,6 @@ func main() {
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
-
 }
 
 func startTrace() {
@@ -49,5 +44,5 @@ func startTrace() {
 		return true, true
 	}
 	go http.ListenAndServe(":8973", nil)
-	grpclog.Println("Trace listen on 8973")
+	log.Println("Trace listen on 8973")
 }
