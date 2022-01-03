@@ -6,7 +6,7 @@ import (
 	"log"
 	"strconv"
 
-	pb "github.com/smallnest/grpc-examples/metatdata/pb"
+	pb "github.com/smallnest/grpc-examples/metadata/pb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 )
